@@ -10,6 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.gesturedemo.ui.theme.GestureDemoTheme
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,10 +33,26 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+@Composable
+fun ClickDemo(modifier: Modifier = Modifier) {
+    var colorState by remember { mutableStateOf(true) }
+    var bgColor by remember { mutableStateOf(Color.Blue) }
 
+    val clickHandler = {
+        colorState = !colorState
+        bgColor = if (colorState) Color.Blue else Color.DarkGray
+    }
+
+    Box(
+        modifier = modifier
+            .clickable { clickHandler() }
+            .background(bgColor)
+            .size(100.dp)
+    )
+}
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
-    // Пока пусто, будем заполнять по шагам
+    ClickDemo(modifier)
 }
 
 @Preview(showBackground = true)
