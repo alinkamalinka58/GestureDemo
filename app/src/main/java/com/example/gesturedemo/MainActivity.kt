@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.gesturedemo.ui.theme.GestureDemoTheme
 import androidx.compose.foundation.background
@@ -55,9 +56,14 @@ fun MainScreen(modifier: Modifier = Modifier) {
 fun MainScreen(modifier: Modifier = Modifier) {
     TapPressDemo(modifier)
 }*/
+/*
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
     DragDemo(modifier)
+}*/
+@Composable
+fun MainScreen(modifier: Modifier = Modifier) {
+    PointerInputDrag(modifier)
 }
 
 @Composable
@@ -128,7 +134,26 @@ fun DragDemo(modifier: Modifier = Modifier) {
         )
     }
 }
+@Composable
+fun PointerInputDrag(modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize()) {
+        var xOffset by remember { mutableStateOf(0f) }
+        var yOffset by remember { mutableStateOf(0f) }
 
+        Box(
+            Modifier
+                .offset { IntOffset(xOffset.roundToInt(), yOffset.roundToInt()) }
+                .background(Color.Blue)
+                .size(100.dp)
+                .pointerInput(Unit) {
+                    detectDragGestures { _, distance ->
+                        xOffset += distance.x
+                        yOffset += distance.y
+                    }
+                }
+        )
+    }
+}
 /*
 @Preview(showBackground = true)
 @Composable
