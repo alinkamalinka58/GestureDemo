@@ -43,6 +43,10 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
 import androidx.compose.foundation.Image
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.foundation.gestures.rememberTransformableState
+import androidx.compose.foundation.gestures.transformable
+import androidx.compose.ui.graphics.graphicsLayer
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,9 +86,14 @@ fun MainScreen(modifier: Modifier = Modifier) {
 fun MainScreen(modifier: Modifier = Modifier) {
     ScrollableModifier(modifier)
 }*/
+/*
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
     ScrollModifiers(modifier)
+}*/
+@Composable
+fun MainScreen(modifier: Modifier = Modifier) {
+    MultiTouchDemo(modifier)
 }
 
 @Composable
@@ -215,7 +224,34 @@ fun ScrollModifiers(modifier: Modifier = Modifier) {
         }
     }
 }
+@Composable
+fun MultiTouchDemo(modifier: Modifier = Modifier) {
+    var scale by remember { mutableStateOf(1f) }
+    var angle by remember { mutableStateOf(0f) }
+    var offset by remember { mutableStateOf(Offset.Zero) }
 
+    val state = rememberTransformableState { scaleChange, offsetChange, rotationChange ->
+        scale *= scaleChange
+        angle += rotationChange
+        offset += offsetChange
+    }
+
+    Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxSize()) {
+        Box(
+            Modifier
+                .graphicsLayer(
+                    scaleX = scale,
+                    scaleY = scale,
+                    rotationZ = angle,
+                    translationX = offset.x,
+                    translationY = offset.y
+                )
+                .transformable(state = state)
+                .background(Color.Blue)
+                .size(100.dp)
+        )
+    }
+}
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
