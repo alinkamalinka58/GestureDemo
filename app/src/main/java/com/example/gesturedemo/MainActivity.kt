@@ -35,6 +35,14 @@ import kotlin.math.roundToInt
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.res.imageResource
+import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,9 +77,14 @@ fun MainScreen(modifier: Modifier = Modifier) {
 fun MainScreen(modifier: Modifier = Modifier) {
     PointerInputDrag(modifier)
 }*/
+/*
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
     ScrollableModifier(modifier)
+}*/
+@Composable
+fun MainScreen(modifier: Modifier = Modifier) {
+    ScrollModifiers(modifier)
 }
 
 @Composable
@@ -185,11 +198,28 @@ fun ScrollableModifier(modifier: Modifier = Modifier) {
         )
     }
 }
-/*
+@Composable
+fun ScrollModifiers(modifier: Modifier = Modifier) {
+    val image = ImageBitmap.imageResource(id = R.drawable.vacation)
+
+    Box(
+        modifier = Modifier
+            .size(150.dp)
+            .verticalScroll(rememberScrollState())
+            .horizontalScroll(rememberScrollState())
+    ) {
+        Canvas(
+            modifier = Modifier.size(360.dp, 270.dp)
+        ) {
+            drawImage(image = image, topLeft = Offset(0f, 0f))
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     GestureDemoTheme {
         MainScreen()
     }
-}*/
+}
